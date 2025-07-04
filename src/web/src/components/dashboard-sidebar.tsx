@@ -17,6 +17,7 @@ import {
   Database,
   AlertTriangle,
 } from "lucide-react"
+import { Link } from "@tanstack/react-router"
 
 interface SidebarProps {
   className?: string
@@ -29,13 +30,13 @@ export function DashboardSidebar({ className }: SidebarProps) {
     {
       title: "Dashboard",
       icon: Home,
-      href: "/dashboard",
+      href: "/",
       active: true,
     },
     {
       title: "Water Level",
       icon: Waves,
-      href: "/water-level",
+      href: "/log/volume",
       badge: "Live",
     },
     {
@@ -112,24 +113,29 @@ export function DashboardSidebar({ className }: SidebarProps) {
         {menuItems.map((item, index) => {
           const Icon = item.icon
           return (
-            <Button
+            <Link
               key={index}
-              variant={item.active ? "default" : "ghost"}
+              to={item.href}
               className={cn(
-                "w-full justify-start h-10",
-                isCollapsed ? "px-2" : "px-3",
-                item.active && "bg-blue-600 text-white hover:bg-blue-700",
+                "flex items-center w-full rounded-md text-sm font-medium",
+                "h-10 transition-colors",
+                item.active
+                  ? "bg-blue-600 text-white hover:bg-blue-700"
+                  : "text-gray-700 hover:bg-gray-100",
+                isCollapsed ? "justify-center px-2" : "justify-start px-3"
               )}
             >
               <Icon className={cn("w-4 h-4", !isCollapsed && "mr-3")} />
               {!isCollapsed && (
                 <>
-                  <span className="flex-1 text-left">{item.title}</span>
+                  <span className="flex-1">{item.title}</span>
                   {item.badge && (
                     <span
                       className={cn(
                         "px-2 py-1 text-xs rounded-full",
-                        item.badge === "Live" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800",
+                        item.badge === "Live"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
                       )}
                     >
                       {item.badge}
@@ -137,7 +143,8 @@ export function DashboardSidebar({ className }: SidebarProps) {
                   )}
                 </>
               )}
-            </Button>
+            </Link>
+
           )
         })}
       </nav>
