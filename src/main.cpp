@@ -1,6 +1,6 @@
-
 #include <FastBot.h>
 #include <LiquidCrystal_I2C.h> 
+#include <ESPSupabase.h>
 
 #define BOT_TOKEN   ""
 #define CHAT_ID     ""
@@ -9,11 +9,15 @@
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 FastBot bot(BOT_TOKEN);
+Supabase db;
 
 const int trigP = D5;
 const int echoP = D6;
 #define pump D7
 #define tdsPin D8
+
+const char* supabaseUrl = "";
+const char* supabaseKey = "";
 
 #define SOUND_VELOCITY 0.034  // cm/us
 #define TDS_CALIBRATION_FACTOR 0.5
@@ -57,6 +61,24 @@ int readTDS() {
     int tdsValue = rawValue * TDS_CALIBRATION_FACTOR;
     return tdsValue;
 }
+
+// =============================
+// Fungsi: Logging ke Supabase
+// =============================
+void logToSupabase(float volume, int tds) {
+    String jsonPayload = "{";
+    jsonPayload += "\"volume_liter\":" + String(volume, 3) + ",";
+    jsonPayload += "\"tds_ppm\":" + String(tds);
+    jsonPayload += "}";
+  
+    Serial.println("[Supabase] Sending: " + jsonPayload);
+  
+    int res = db.insert("log_level_air", jsonPayload, false);
+  
+    Serial.print("[Supabase] Response Code: ");
+    Serial.println(res);
+  }
+  
 
 // =============================
 // Fungsi: Handle Pesan Telegram
@@ -154,7 +176,8 @@ void pumpOff() {
 // =============================
 void connectWiFi() {
     delay(2000);
-    Serial.begin(115200);
+    // Serial.begin(115200);
+    Serial.begin(9600);
     Serial.println();
 
     WiFi.begin(WIFI_SSID, WIFI_PASS);
@@ -175,7 +198,8 @@ void setup() {
     La_silinder = 61;    // luas alas tabung (jika digunakan)
     PxL_balok = 5000;     // luas alas balok (jika digunakan)
 
-    Serial.begin(115200);
+    // Serial.begin(115200);
+    Serial.begin(9600);
     pinMode(trigP, OUTPUT);
     pinMode(echoP, INPUT);
     pinMode(pump, OUTPUT);
@@ -194,6 +218,8 @@ void setup() {
     lcd.clear();
     lcd.print("Tunggu Koneksi..");
     Serial.println();
+
+    db.begin(supabaseUrl, supabaseKey);
 
     connectWiFi();
 
@@ -239,6 +265,10 @@ void loop() {
     lcd.setCursor(9, 0);
     lcd.print(vol, 3);
     lcd.print(" Lt");
+
+
+    int tdsValue = readTDS();
+    logToSupabase(vol, tdsValue);
 
     if (mode) {  // Mode otomatis
         lcd.setCursor(0, 0);
@@ -293,5 +323,5 @@ void loop() {
         }
     }
 
-    delay(1000);
+    delay(30000);
 }
