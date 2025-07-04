@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { useState, useEffect } from "react";
 import { SensorCard } from "@/components/sensor-card";
@@ -7,7 +7,6 @@ import { AlertPanel } from "@/components/alert-panel";
 import { WaterLevelChart } from "@/components/water-level-chart";
 import { Droplets, Zap, Waves, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { DashboardSidebar } from "./dashboard-sidebar";
 
 export default function WaterMonitoringDashboard() {
   // Simulated sensor data - replace with real sensor readings
@@ -17,7 +16,7 @@ export default function WaterMonitoringDashboard() {
     pumpRunning: false,
     pumpRuntime: "2h 15m",
     flowRate: 12.5,
-  });
+  })
 
   const [alerts, setAlerts] = useState([
     {
@@ -32,7 +31,7 @@ export default function WaterMonitoringDashboard() {
       message: "Pump maintenance due in 5 days",
       timestamp: "1 hour ago",
     },
-  ]);
+  ])
 
   // Simulate real-time data updates
   useEffect(() => {
@@ -42,18 +41,18 @@ export default function WaterMonitoringDashboard() {
         waterLevel: prev.waterLevel + (Math.random() - 0.5) * 2,
         tdsValue: prev.tdsValue + (Math.random() - 0.5) * 10,
         flowRate: prev.pumpRunning ? 12.5 + (Math.random() - 0.5) * 2 : 0,
-      }));
-    }, 3000);
+      }))
+    }, 3000)
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => clearInterval(interval)
+  }, [])
 
   const handlePumpToggle = () => {
     setSensorData((prev) => ({
       ...prev,
       pumpRunning: !prev.pumpRunning,
-    }));
-  };
+    }))
+  }
 
   const handleRefresh = () => {
     // Simulate data refresh
@@ -61,20 +60,20 @@ export default function WaterMonitoringDashboard() {
       ...prev,
       waterLevel: 45 + (Math.random() - 0.5) * 10,
       tdsValue: 320 + (Math.random() - 0.5) * 50,
-    }));
-  };
+    }))
+  }
 
   const getWaterLevelStatus = (level: number) => {
-    if (level < 20) return "critical";
-    if (level < 35) return "warning";
-    return "normal";
-  };
+    if (level < 20) return "critical"
+    if (level < 35) return "warning"
+    return "normal"
+  }
 
   const getTDSStatus = (tds: number) => {
-    if (tds > 500 || tds < 50) return "critical";
-    if (tds > 400 || tds < 100) return "warning";
-    return "normal";
-  };
+    if (tds > 500 || tds < 50) return "critical"
+    if (tds > 400 || tds < 100) return "warning"
+    return "normal"
+  }
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -175,5 +174,5 @@ export default function WaterMonitoringDashboard() {
         </div>
       </div>
     </div>
-  );
+  )
 }
