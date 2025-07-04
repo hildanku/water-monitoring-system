@@ -31,7 +31,7 @@ export function WaterLevelChart({ currentLevel, maxLevel, minLevel }: WaterLevel
               style={{ height: `${safePercentage}%` }}
             />
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-sm font-semibold text-gray-700">{currentLevel}cm</span>
+              <span className="text-sm font-semibold text-gray-700">{currentLevel}l</span>
             </div>
           </div>
 
@@ -39,15 +39,15 @@ export function WaterLevelChart({ currentLevel, maxLevel, minLevel }: WaterLevel
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span>Maximum Level:</span>
-              <span className="font-semibold">{maxLevel}cm</span>
+              <span className="font-semibold">{maxLevel}L</span>
             </div>
             <div className="flex justify-between">
               <span>Current Level:</span>
-              <span className="font-semibold">{currentLevel}cm</span>
+              <span className="font-semibold">{currentLevel}L</span>
             </div>
             <div className="flex justify-between">
               <span>Minimum Level:</span>
-              <span className="font-semibold">{minLevel}cm</span>
+              <span className="font-semibold">{minLevel}L</span>
             </div>
           </div>
 
