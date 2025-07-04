@@ -4,8 +4,8 @@
 
 #define BOT_TOKEN   ""
 #define CHAT_ID     ""
-#define WIFI_SSID   "Wifiumah"
-#define WIFI_PASS   "kiwil2403"
+#define WIFI_SSID   "Akatomo"
+#define WIFI_PASS   "akatomo12"
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 FastBot bot(BOT_TOKEN);
@@ -72,12 +72,26 @@ void logToSupabase(float volume, int tds) {
     jsonPayload += "}";
   
     Serial.println("[Supabase] Sending: " + jsonPayload);
-  
+    
     int res = db.insert("log_level_air", jsonPayload, false);
   
     Serial.print("[Supabase] Response Code: ");
     Serial.println(res);
-  }
+}
+
+void logEventToSupabase(boolean pump_status, String mode, int isi_ulang_ke, String log_level, String event_message) {
+    String jsonPayload = "{";
+    jsonPayload += "\"pump_status\":\"" + String(pump_status ? "ON" : "OFF") + "\",";
+    jsonPayload += "\"mode\":\"" + String(mode) + "\",";
+    jsonPayload += "\"isi_ulang_ke\":" + String(isi_ulang_ke) + ",";
+    jsonPayload += "\"log_level\":\"" + String(log_level) + "\",";
+    jsonPayload += "\"event_message\":\"" + String(event_message) + "\"";
+    jsonPayload += "}";
+    Serial.println("[Supabase] Logging event: " + jsonPayload);
+    int res = db.insert("log_event", jsonPayload, false);
+    Serial.print("[Supabase] Event Response Code: ");
+    Serial.println(res);
+}
   
 
 // =============================
@@ -284,6 +298,13 @@ void loop() {
 
             if (!f_oto && isiUlang == 0) {
                 bot.sendMessage("Pengisian otomatis dimulai, pompa ON");
+                logEventToSupabase(
+                    "ON",
+                    "Otomatis",
+                    isiUlang,
+                    "INFO",
+                    "Pengisian otomatis dimulai, pompa ON"
+                  );
                 f_oto = true;
             }
         } else {
@@ -294,6 +315,13 @@ void loop() {
                 String pesan = "Pengisian otomatis selesai, pompa OFF\n";
                 pesan += "Pompa akan hidup kembali jika volume < 0.3 lt";
                 bot.sendMessage(pesan);
+                logEventToSupabase(
+                    "OFF",
+                    "Otomatis",
+                    isiUlang,
+                    "INFO",
+                    "Pengisian otomatis selesai, pompa OFF"
+                  );
                 f_oto = false;
             }
             fFull = true;
@@ -310,6 +338,13 @@ void loop() {
                 String pesan = "Pengisian dimulai, pompa ON\n";
                 pesan += "Matikan pompa: /Pump_OFF";
                 bot.sendMessage(pesan);
+                logEventToSupabase(
+                    "ON",
+                    "Manual",
+                    isiUlang,
+                    "INFO",
+                    "Pompa manual dinyalakan"
+                  );
                 f_man = true;
             }
         } else {
@@ -319,6 +354,13 @@ void loop() {
                 pesan += "Hidupkan pompa: /Pump_ON";
                 bot.sendMessage(pesan);
                 f_man = false;
+                logEventToSupabase(
+                    "OFF",
+                    "Manual",
+                    isiUlang,
+                    "INFO",
+                    "Pompa manual dimatikan"
+                  );
             }
         }
     }
