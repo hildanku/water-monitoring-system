@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   Waves,
-  Droplets,
   Settings,
   BarChart3,
   Bell,
@@ -34,51 +33,20 @@ export function DashboardSidebar({ className }: SidebarProps) {
       active: true,
     },
     {
-      title: "Water Level",
+      title: "Log Water Level",
       icon: Waves,
       href: "/log/volume",
       badge: "Live",
     },
     {
-      title: "TDS Monitoring",
-      icon: Droplets,
-      href: "/tds-monitoring",
+      title: "Log Event",
+      icon: History,
+      href: "/log/event",
     },
     {
       title: "Pump Control",
       icon: Zap,
       href: "/pump-control",
-    },
-    {
-      title: "Analytics",
-      icon: BarChart3,
-      href: "/analytics",
-    },
-    {
-      title: "Alerts",
-      icon: Bell,
-      href: "/alerts",
-      badge: "2",
-    },
-    {
-      title: "History",
-      icon: History,
-      href: "/history",
-    },
-    {
-      title: "Data Logs",
-      icon: Database,
-      href: "/data-logs",
-    },
-    {
-      title: "Maintenance",
-      icon: AlertTriangle,
-      href: "/maintenance",
-    },
-    {
-      title: "Settings",
-      icon: Settings,
-      href: "/settings",
     },
   ]
 

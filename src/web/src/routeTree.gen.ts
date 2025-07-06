@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LogVolumeRouteImport } from './routes/log/volume'
+import { Route as LogEventRouteImport } from './routes/log/event'
 
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
@@ -28,34 +29,43 @@ const LogVolumeRoute = LogVolumeRouteImport.update({
   path: '/log/volume',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LogEventRoute = LogEventRouteImport.update({
+  id: '/log/event',
+  path: '/log/event',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/log/event': typeof LogEventRoute
   '/log/volume': typeof LogVolumeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/log/event': typeof LogEventRoute
   '/log/volume': typeof LogVolumeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/log/event': typeof LogEventRoute
   '/log/volume': typeof LogVolumeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/log/volume'
+  fullPaths: '/' | '/about' | '/log/event' | '/log/volume'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/log/volume'
-  id: '__root__' | '/' | '/about' | '/log/volume'
+  to: '/' | '/about' | '/log/event' | '/log/volume'
+  id: '__root__' | '/' | '/about' | '/log/event' | '/log/volume'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  LogEventRoute: typeof LogEventRoute
   LogVolumeRoute: typeof LogVolumeRoute
 }
 
@@ -82,12 +92,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LogVolumeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/log/event': {
+      id: '/log/event'
+      path: '/log/event'
+      fullPath: '/log/event'
+      preLoaderRoute: typeof LogEventRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  LogEventRoute: LogEventRoute,
   LogVolumeRoute: LogVolumeRoute,
 }
 export const routeTree = rootRouteImport
