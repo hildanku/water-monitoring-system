@@ -73,7 +73,7 @@ export default function WaterMonitoringDashboard() {
     refetchInterval: 5000,
   })
 
-  const [alerts, setAlerts] = useState([
+  const [alerts] = useState([
     {
       id: "1",
       type: "warning" as const,

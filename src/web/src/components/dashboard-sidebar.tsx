@@ -5,16 +5,11 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   Waves,
-  Settings,
-  BarChart3,
-  Bell,
   History,
   Zap,
   Menu,
   X,
   Home,
-  Database,
-  AlertTriangle,
 } from "lucide-react"
 import { Link } from "@tanstack/react-router"
 

@@ -13,18 +13,6 @@ interface SensorCardProps {
 }
 
 export function SensorCard({ title, value, unit, status, progress, icon }: SensorCardProps) {
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "normal":
-        return "bg-green-500"
-      case "warning":
-        return "bg-yellow-500"
-      case "critical":
-        return "bg-red-500"
-      default:
-        return "bg-gray-500"
-    }
-  }
 
   const getStatusVariant = (status: string) => {
     switch (status) {
